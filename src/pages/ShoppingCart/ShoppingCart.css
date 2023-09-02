@@ -1,0 +1,10 @@
+.types {
+    background: #EEEEEE;
+    border-radius: 5px;
+}
+
+.types :hover {
+    background: #0a324f !important;
+    color: white;
+    border-radius: 5px;
+}

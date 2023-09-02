@@ -72,7 +72,7 @@ const Header = (props) => {
                                         </span>
                                     </div>
                                 </Nav.Link>
-                                <Nav.Link><Link to={"/products"}></Link>
+                                <Nav.Link as={Link} to="/cart">
                                     <div className={"d-flex"}>
                                         <span className={"me-1"}>
                                             Cart
@@ -87,7 +87,7 @@ const Header = (props) => {
                                 <Nav.Link href="#">Add To Role</Nav.Link>
                             </Nav>
                             <Nav>
-                                <Nav.Link href="#">Login</Nav.Link>
+                                <Nav.Link as={Link} to="/login" href="#">Login</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </div>

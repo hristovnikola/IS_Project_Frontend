@@ -52,6 +52,7 @@ const ProductTerm = (props) => {
         swal({
             title: "Do you really want to delete this item?",
             icon: "warning",
+            buttons: ["Cancel", "Ok"],
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
