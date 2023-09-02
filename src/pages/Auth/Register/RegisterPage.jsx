@@ -1,9 +1,35 @@
-import React from "react";
-import {Link} from 'react-router-dom'; // Assuming you're using React Router for routing
+import React, {useState} from "react";
+import {Link, useNavigate} from 'react-router-dom'; // Assuming you're using React Router for routing
 import "./Register.css";
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import AuthenticationRepository from "../../../repository/authenticationRepository/AuthenticationRepository";
 
 const RegisterPage = (props) => {
+
+    const navigate = useNavigate();
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleRegisterRequest = (e) => {
+        e.preventDefault();
+
+        const request = {
+            firstName: firstName,
+            lastName: lastName,
+            username: username,
+            email: email,
+            password: password
+        }
+
+        AuthenticationRepository.registerUser(request).then(() =>{
+            navigate("/login");
+        })
+    }
+
     return (
         <div>
             <Container id="loginRegisterForm">
@@ -12,7 +38,7 @@ const RegisterPage = (props) => {
                     <Col xs={12}>
                         <hr style={{color: '#00ADB5'}}/>
                         <p>Create a new account</p>
-                        <Form method="post">
+                        <Form method="post" onSubmit={handleRegisterRequest}>
                             <Row>
                                 <Col xs={12} md={6}>
                                     <Form.Control
@@ -22,6 +48,8 @@ const RegisterPage = (props) => {
                                         placeholder="First name"
                                         name="firstName"
                                         aria-label="readonly input example"
+                                        value={firstName}
+                                        onChange={e => setFirstName(e.target.value)}
                                     />
                                 </Col>
                                 <Col xs={12} md={6}>
@@ -32,16 +60,20 @@ const RegisterPage = (props) => {
                                         placeholder="Last name"
                                         name="lastName"
                                         aria-label="readonly input example"
+                                        value={lastName}
+                                        onChange={e => setLastName(e.target.value)}
                                     />
                                 </Col>
                                 <Col xs={12} md={6}>
                                     <Form.Control
-                                        id="login_field"
+                                        id="username_field"
                                         className="form-control mb-3"
                                         type="text"
                                         placeholder="Username"
                                         name="username"
                                         aria-label="readonly input example"
+                                        value={username}
+                                        onChange={e => setUsername(e.target.value)}
                                     />
                                 </Col>
                                 <Col xs={12} md={6}>
@@ -52,6 +84,8 @@ const RegisterPage = (props) => {
                                         placeholder="Password"
                                         name="password"
                                         aria-label="readonly input example"
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
                                     />
                                 </Col>
                                 <Col xs={12}>
@@ -62,6 +96,8 @@ const RegisterPage = (props) => {
                                         placeholder="Email"
                                         name="email"
                                         aria-label="readonly input example"
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
                                     />
                                 </Col>
                                 <Col>

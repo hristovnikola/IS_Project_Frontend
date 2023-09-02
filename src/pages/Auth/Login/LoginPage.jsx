@@ -1,9 +1,33 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router for routing
+import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom'; // Assuming you're using React Router for routing
 import './LoginPage.css';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import AuthenticationRepository from "../../../repository/authenticationRepository/AuthenticationRepository";
 
 const LoginPage = (props) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    const handleLoginRequest = e => {
+        e.preventDefault();
+        const request = {
+            username: username,
+            password: password
+        };
+        AuthenticationRepository.loginUser(request)
+            .then((data) => {
+                localStorage.setItem("auth_token", data.data);
+                navigate("/home");
+            });
+    };
+
+    useEffect(() => {
+        if (localStorage.getItem('auth_token')) {
+            navigate("/home");
+        }
+    }, [navigate]);
+
     return (
         <div>
             <Container id="loginRegisterForm">
@@ -12,7 +36,7 @@ const LoginPage = (props) => {
                     <Col xs={12}>
                         <hr style={{ color: '#00ADB5' }} />
                         <p>Please login to your account</p>
-                        <Form method="post">
+                        <Form method="post" onSubmit={handleLoginRequest}>
                             <Row>
                                 <Col xs={12}>
                                     <Form.Control
@@ -22,6 +46,8 @@ const LoginPage = (props) => {
                                         placeholder="Username"
                                         name="username"
                                         aria-label="readonly input example"
+                                        value={username}
+                                        onChange={e => setUsername(e.target.value)}
                                     />
                                 </Col>
                                 <Col xs={12}>
@@ -32,10 +58,12 @@ const LoginPage = (props) => {
                                         placeholder="Password"
                                         name="password"
                                         aria-label="readonly input example"
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
                                     />
                                 </Col>
                                 <Col xs={12}>
-                                    <Button id="log_in_button" className="btn btn-primary w-100 log_in_button">
+                                    <Button id="log_in_button" className="btn btn-primary w-100 log_in_button" type="submit">
                                         Log in
                                     </Button>
                                 </Col>

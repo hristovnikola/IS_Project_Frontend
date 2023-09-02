@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BiLogoFacebookCircle, BiSolidHome} from "react-icons/bi";
 import {BsFacebook, BsInstagram, BsLinkedin} from "react-icons/bs";
 import {FaFacebook} from "react-icons/fa";
-import {Nav, Navbar} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Button, Nav, Navbar} from "react-bootstrap";
+import {Link, useNavigate} from "react-router-dom";
 import {MdEmail} from "react-icons/md";
+import jwt from 'jwt-decode';
 
 const Header = (props) => {
+    const token = localStorage.getItem('auth_token');
+    let username = null;
+    if (token) {
+        const decoded_token = jwt(token);
+        console.log(decoded_token);
+        username = decoded_token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+    }
+    
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem('auth_token');
+        navigate('/home');
+    }
+
     return (
         <>
             <div className="container-fluid topbar" style={{background: '#0a324f'}}>
@@ -87,7 +102,9 @@ const Header = (props) => {
                                 <Nav.Link href="#">Add To Role</Nav.Link>
                             </Nav>
                             <Nav>
-                                <Nav.Link as={Link} to="/login" href="#">Login</Nav.Link>
+                                {!username && <Nav.Link as={Link} to="/login" href="#">Login</Nav.Link>}
+                                {username && <><span>{username}</span>
+                                    <Button onClick={handleLogout}>Logout</Button></>}
                             </Nav>
                         </Navbar.Collapse>
                     </div>
