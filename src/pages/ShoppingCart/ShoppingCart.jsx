@@ -1,10 +1,37 @@
 import "./ShoppingCart.css";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import ProductService from "../../repository/productRepository/ProductRepository";
+import ShoppingCartService from "../../repository/shoppingCartRepository/ShoppingCartRepository";
+import Swal from "sweetalert2";
+import swal from "sweetalert";
+import {BiSolidDownArrow, BiSolidUpArrow} from "react-icons/bi";
+import ShoppingCartTerm from "./ShoppingCartTerm/ShoppingCartTerm";
 
 const ShoppingCart = (props) => {
     const [items, setItems] = useState([]);
+    const [totalCartPrice, setTotalCartPrie] = useState('');
 
     const [order, setOrder] = useState({});
+
+    useEffect(() => {
+        getShoppingCart();
+    }, []);
+
+    const getShoppingCart = () => {
+        ShoppingCartService.getShoppingCartForLoggedInUser()
+            .then((data) => {
+                setItems(data.data.products);
+                setTotalCartPrie(data.data.totalPrice);
+                console.log(data.data)
+            })
+            .catch((error) => {
+                console.error("Error fetching shopping cart items:", error);
+            })
+    }
+
+
+    console.log(items)
+    console.log(totalCartPrice)
 
     return (
         <>
@@ -17,19 +44,19 @@ const ShoppingCart = (props) => {
                 <div className="row">
                     <div className="col-3">
                         <div className="types">
-                            <p className="text-center m-auto py-2">Product image and name</p>
+                            <p className="text-center m-auto py-2">Product image</p>
                         </div>
                     </div>
                     <div className="col-9">
                         <div className="row">
                             <div className="col-3">
                                 <div className="types">
-                                    <p className="text-center m-auto py-2">Price</p>
+                                    <p className="text-center m-auto py-2">Name</p>
                                 </div>
                             </div>
                             <div className="col-3">
                                 <div className="types">
-                                    <p className="text-center m-auto py-2">Size</p>
+                                    <p className="text-center m-auto py-2">Price</p>
                                 </div>
                             </div>
                             <div className="col-3">
@@ -50,46 +77,8 @@ const ShoppingCart = (props) => {
             <div className="container mt-5">
                 {items.length > 0 ? (
                     items.map((item) => (
-                        <div className="row mt-5" key={item.id}>
-                            <div className="col-3">
-                                <div className="row">
-                                    <div className="col-6">
-                                        <img className="w-100" src={item.product.imageURL} alt=""/>
-                                    </div>
-                                    <div className="col-6 d-flex">
-                                        <p className="text-center m-auto">{item.product.name}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-9">
-                                <div className="row h-100 d-flex justify-content-center align-items-center p-0">
-                                    <div className="col-3">
-                                        <p className="text-center m-auto py-2">${item.product.price}</p>
-                                    </div>
-                                    <div className="col-3">
-                                        <p className="text-center m-auto py-2">{item.selected_size}</p>
-                                    </div>
-                                    <div className="col-3 d-flex justify-content-center">
-                                        <p className="text-center mt-auto mb-auto mx-3 py-2 item_quantity">{item.quantity}</p>
-                                        <div className="quantity mt-auto mb-auto">
-                                            <a className="inc_button" href={`{% url 'increase_quantity' ${item.id} %}`}><img
-                                                className="chg-quantity inc"
-                                                src={`{% static  'images/arrow-up.png' %}`}
-                                                alt=""/></a>
-                                            <a className="dec_button" href={`{% url 'decrease_quantity' ${item.id} %}`}><img
-                                                className="chg-quantity dec"
-                                                src={`{% static  'images/arrow-down.png' %}`}
-                                                alt=""/></a>
-                                        </div>
-                                    </div>
-                                    <div className="col-3 d-flex">
-                                        <p className="text-center m-auto">${item.get_total}</p>
-                                        <a className="btn btn-danger btn-sm delete_cart_item"
-                                           href={`{% url 'delete_item' ${item.id} %}`}>Delete Item</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <ShoppingCartTerm item={item}
+                                          getShoppingCart={getShoppingCart}/>
                     ))
                 ) : (
                     <div>There are no items</div>
@@ -107,7 +96,7 @@ const ShoppingCart = (props) => {
                                 </div>
                             </div>
                             <div className="col-3 d-flex">
-                                <p className="text-center m-auto">${order.get_cart_total}</p>
+                                <p className="text-center m-auto">${totalCartPrice}</p>
                             </div>
                         </div>
                     </div>

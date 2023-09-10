@@ -26,7 +26,7 @@ const AllRoutes = () => {
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/register" element={<RegisterPage/>}/>
             </Routes>
-            {!isLoginPage && !isRegisterPage && !isCartPage &&  <Footer/>}
+            {!isLoginPage && !isRegisterPage &&  <Footer/>}
         </div>
     )
 }

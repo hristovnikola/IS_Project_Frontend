@@ -4,12 +4,26 @@ import ProductService from "../../../repository/productRepository/ProductReposit
 import swal from "sweetalert";
 import {useState} from "react";
 import AddEditProductModal from "../AddEditProductModal/AddEditProductModal";
+import ShoppingCartService from "../../../repository/shoppingCartRepository/ShoppingCartRepository";
+import Swal from 'sweetalert2';
+import {Link, Navigate} from "react-router-dom";
+import {useShoppingCart} from "../../../ShoppingCartContext";
 
 const ProductTerm = (props) => {
 
     const [selectedProductForEdit, setSelectedProductForEdit] = useState({});
 
     const [showEditModal, setShowEditModal] = useState(false);
+
+    const { updateCartItems } = useShoppingCart();
+
+    const getNumberOfItemsInCart = () => {
+        ShoppingCartService.getShoppingCartForLoggedInUser()
+            .then((data) => {
+                updateCartItems((data.data.products).length);
+                console.log("Data after add", data.data.products.length);
+            })
+    }
 
     const handleShowEditProductModal = () => {
         setShowEditModal(true);
@@ -21,8 +35,21 @@ const ProductTerm = (props) => {
     }
 
     const deletedSuccesfullyAlert = () => {
-        swal("Product deleted successfully", {
-            icon: "success",
+        Swal.fire({
+            icon: 'success',
+            title: 'Product deleted sucessfuly',
+            footer: '<a href="">Why do I have this issue?</a>'
+        })
+    }
+
+
+    const addToCartSucessful = (product) => {
+        Swal.fire({
+            title: product.name + ' added to cart!',
+            imageUrl: product.imagePath,
+            imageWidth: 400,
+            imageAlt: 'Custom image',
+            confirmButtonText: "Continue shopping!"
         })
     }
 
@@ -49,16 +76,25 @@ const ProductTerm = (props) => {
     }
 
     const ConfirmationDelete = (id) => {
-        swal({
+        Swal.fire({
             title: "Do you really want to delete this item?",
             icon: "warning",
-            buttons: ["Cancel", "Ok"],
+            showCloseButton: true,
+            showCancelButton: true,
             dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                deleteProduct(id);
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteProduct(id)
             }
         })
+    }
+
+    const AddToCart = (product) => {
+        ShoppingCartService.addProductInShoppingCart(product.id)
+            .then(() => {
+                addToCartSucessful(product);
+                getNumberOfItemsInCart();
+            });
     }
 
     return (
@@ -89,11 +125,13 @@ const ProductTerm = (props) => {
                             <div>
                                 <span
                                     className={"mt-1 justify-content-center badge px-3 py-2 text-white rounded-4 capacity"}>
-                                {props.product.price}
+                                $ {props.product.price}
                             </span>
                             </div>
                             <div className={"d-flex ms-auto"}>
-                                <a className={"btn btn-info rounded-4  me-2"}>Details</a>
+                                <a className={"btn btn-info rounded-4 me-2"}
+                                    onClick={() => AddToCart(props.product)}
+                                >Add to cart</a>
                                 <a className={"btn btn-success rounded-4  me-2"}
                                    onClick={() => {
                                        setSelectedProductForEdit(props.product);

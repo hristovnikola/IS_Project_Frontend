@@ -1,13 +1,32 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BiLogoFacebookCircle, BiSolidHome} from "react-icons/bi";
-import {BsFacebook, BsInstagram, BsLinkedin} from "react-icons/bs";
+import {BsFacebook, BsFillCartFill, BsInstagram, BsLinkedin} from "react-icons/bs";
 import {FaFacebook} from "react-icons/fa";
 import {Button, Nav, Navbar} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {MdEmail} from "react-icons/md";
 import jwt from 'jwt-decode';
+import ShoppingCartService from "../../../repository/shoppingCartRepository/ShoppingCartRepository";
+import {TbLogin, TbLogout2} from "react-icons/tb";
 
 const Header = (props) => {
+    const [cartItems, setCartItems] = useState(0);
+
+    useEffect(() => {
+        if (token) {
+            getNumberOfItemsInCart();
+        }
+    }, [])
+
+    const getNumberOfItemsInCart = () => {
+        ShoppingCartService.getShoppingCartForLoggedInUser()
+            .then((data) => {
+                setCartItems((data.data.products).length)
+            })
+    }
+
+    console.log("Num of cart items: ", cartItems);
+
     const token = localStorage.getItem('auth_token');
     let username = null;
     if (token) {
@@ -15,12 +34,13 @@ const Header = (props) => {
         console.log(decoded_token);
         username = decoded_token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
     }
-    
+
     const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.removeItem('auth_token');
         navigate('/home');
     }
+
 
     return (
         <>
@@ -87,24 +107,33 @@ const Header = (props) => {
                                         </span>
                                     </div>
                                 </Nav.Link>
-                                <Nav.Link as={Link} to="/cart">
-                                    <div className={"d-flex"}>
-                                        <span className={"me-1"}>
-                                            Cart
-                                        </span>
-                                        <span className={"d-flex mt-auto mb-auto"}>
-                                            <BiSolidHome/>
-                                        </span>
-                                    </div>
-                                </Nav.Link>
-                                <Nav.Link href="#">Add Product</Nav.Link>
-                                <Nav.Link href="#">Add Pc</Nav.Link>
-                                <Nav.Link href="#">Add To Role</Nav.Link>
+
+                                {/*<Nav.Link href="#">Add Product</Nav.Link>*/}
+                                {/*<Nav.Link href="#">Add Pc</Nav.Link>*/}
+                                {/*<Nav.Link href="#">Add To Role</Nav.Link>*/}
                             </Nav>
                             <Nav>
-                                {!username && <Nav.Link as={Link} to="/login" href="#">Login</Nav.Link>}
-                                {username && <><span>{username}</span>
-                                    <Button onClick={handleLogout}>Logout</Button></>}
+                                <Nav.Link className={"mt-auto mb-auto"} as={Link} to="/cart">
+                                    {token && (
+                                        <div className={"d-flex align-items-center rounded-3 bg-info px-3 py-2"}>
+                                            <>
+                                                <BsFillCartFill size={25}/>
+                                                {cartItems > 0 ? (
+                                                    <div className="ms-1">{cartItems} items</div>
+                                                ) : (
+                                                    <div className="ms-1">Cart is empty</div>
+                                                )}
+                                            </>
+                                        </div>
+                                    )}
+                                </Nav.Link>
+                            </Nav>
+                            <Nav>
+                                {!username && <Button as={Link} to="/login" href="#">Login<TbLogout2 size={20}
+                                                                                                     className={"mt-auto mb-auto ms-1"}/></Button>}
+                                {username && <><span className={"mt-auto mb-auto me-2"}>Logged in as: <b>{username}</b></span>
+                                    <Button onClick={handleLogout}>Logout<TbLogout2 size={20}
+                                                                                    className={"mt-auto mb-auto ms-1"}/></Button></>}
                             </Nav>
                         </Navbar.Collapse>
                     </div>

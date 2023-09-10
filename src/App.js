@@ -5,14 +5,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Aux from "./hoc/AuxWrapper"
 import AllRoutes from "./routes";
+import {ShoppingCartProvider} from './ShoppingCartContext';
+
 
 function App() {
 
-  return (
-      <Aux>
-          {<AllRoutes/>}
-      </Aux>
-  );
+    return (
+        <Aux>
+            <ShoppingCartProvider>
+                {<AllRoutes/>}
+            </ShoppingCartProvider>
+        </Aux>
+    );
 }
 
 export default App;

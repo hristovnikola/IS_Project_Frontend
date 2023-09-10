@@ -5,6 +5,7 @@ import React, {useState} from "react";
 import ProductService from "../../../repository/productRepository/ProductRepository";
 import swal from "sweetalert";
 import {Formik} from "formik";
+import Swal from "sweetalert2";
 
 const AddEditProductModal = (props) => {
 
@@ -27,13 +28,14 @@ const AddEditProductModal = (props) => {
     });
 
     const addProductSuccessfulAlert = () => {
-        swal("Product added successfully", {
-            icon: "success",
+        Swal.fire({
+            icon: 'success',
+            title: 'Product added sucessfuly',
         })
     }
 
     const errorAlert = () => {
-        swal({
+        Swal.fire({
             title: "Something went wrong",
             icon: "error",
             dangerMode: true
