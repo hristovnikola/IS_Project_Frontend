@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom'; // Assuming you're using React Router for routing
 import './LoginPage.css';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import {Button, Col, Container, Form, Row} from 'react-bootstrap';
 import AuthenticationRepository from "../../../repository/authenticationRepository/AuthenticationRepository";
+import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 const LoginPage = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleLoginRequest = e => {
@@ -17,10 +20,33 @@ const LoginPage = (props) => {
         };
         AuthenticationRepository.loginUser(request)
             .then((data) => {
-                localStorage.setItem("auth_token", data.data);
-                navigate("/home");
+                if (data.status === 200) {
+                    localStorage.setItem("auth_token", data.data);
+                    navigate("/home");
+                } else {
+                    errorAlert();
+                    setUsername('');
+                    setPassword('');
+                }
+            })
+            .catch((error) => {
+                console.error('API Error:', error);
+                errorAlert();
+                setUsername('');
+                setPassword('');
             });
+        ;
     };
+
+    const errorAlert = () => {
+        Swal.fire({
+            title: "Invalid credentials, try again!",
+            icon: "error",
+        }).then((willDelete) => {
+            if (willDelete) {
+            }
+        })
+    }
 
     useEffect(() => {
         if (localStorage.getItem('auth_token')) {
@@ -34,7 +60,7 @@ const LoginPage = (props) => {
                 <h2 className="text-center">Log in</h2>
                 <Row>
                     <Col xs={12}>
-                        <hr style={{ color: '#00ADB5' }} />
+                        <hr style={{color: '#00ADB5'}}/>
                         <p>Please login to your account</p>
                         <Form method="post" onSubmit={handleLoginRequest}>
                             <Row>
@@ -63,7 +89,8 @@ const LoginPage = (props) => {
                                     />
                                 </Col>
                                 <Col xs={12}>
-                                    <Button id="log_in_button" className="btn btn-primary w-100 log_in_button" type="submit">
+                                    <Button id="log_in_button" className="btn btn-primary w-100 log_in_button"
+                                            type="submit">
                                         Log in
                                     </Button>
                                 </Col>

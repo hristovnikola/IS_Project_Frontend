@@ -24,6 +24,15 @@ const ShoppingCartService = {
     decreaseQuantityForProduct: (id) => {
         return axios.post(`/ShoppingCart/decrease-quantity/${id}`);
     },
+
+    makeOrder: () => {
+        return axios.post("/ShoppingCart/order");
+    },
+
+    checkout: () => {
+        return axios.post("/Checkout/checkout");
+    }
+
 }
 
 export default ShoppingCartService;

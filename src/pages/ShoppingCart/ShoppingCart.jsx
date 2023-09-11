@@ -6,12 +6,23 @@ import Swal from "sweetalert2";
 import swal from "sweetalert";
 import {BiSolidDownArrow, BiSolidUpArrow} from "react-icons/bi";
 import ShoppingCartTerm from "./ShoppingCartTerm/ShoppingCartTerm";
+import {loadStripe} from "@stripe/stripe-js";
+import {Navigate, useNavigate} from "react-router-dom";
+import {Form} from "react-bootstrap";
 
 const ShoppingCart = (props) => {
+
     const [items, setItems] = useState([]);
+
     const [totalCartPrice, setTotalCartPrie] = useState('');
 
+    const [respons, setResponse] = useState({});
+
+    const stripePromise = loadStripe('pk_test_51NNc7MJYxaVpIsNPsejTvjlgTvs0QiY0oroPNPGRWl1vnEbTJSMR9LQr9kBAHozJEKHEbGUkXWxN6FY2lriz1fYt00e5JHaUCw');
+
     const [order, setOrder] = useState({});
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getShoppingCart();
@@ -30,13 +41,20 @@ const ShoppingCart = (props) => {
     }
 
 
-    console.log(items)
-    console.log(totalCartPrice)
+    const handleCheckout = () => {
+        ShoppingCartService.checkout().then(async (data) => {
+            setResponse(data.data);
+            console.log(data.data)
+            const stripe = await loadStripe(data.data.pubKey);
+            await stripe.redirectToCheckout({sessionId: data.data.sessionId});
+        });
+    }
+
 
     return (
         <>
             <div className="container">
-                <p className="text-center my-5 fw-semibold fs-3">Example text</p>
+                <p className="text-center my-5 fw-semibold fs-3 cart-heading">My shopping cart</p>
                 <hr style={{color: '#00ADB5'}}/>
             </div>
 
@@ -106,11 +124,17 @@ const ShoppingCart = (props) => {
             <div className="container ">
                 <div className="row d-flex justify-content-end">
                     <div className="col-3 d-flex justify-content-end mt-3">
-                        <a href={`{% url 'checkout' ${order.id} %}`} className="btn btn-success w-75 text-dark"
-                           style={{backgroundColor: '#97FC7E', borderColor: '#97FC7E'}}>Checkout</a>
+                        <a
+                            className="btn btn-success w-75 text-dark"
+                            style={{backgroundColor: '#97FC7E', borderColor: '#97FC7E'}}
+                            onClick={handleCheckout}
+                            type="submit"
+                        >
+                            Checkout
+                        </a>
                     </div>
                 </div>
-                <div className="row d-flex justify-content-end">
+                <div className="row d-flex justify-content-end mb-5">
                     <div className="col-3 d-flex justify-content-end mt-1">
                         <a className="btn btn-danger w-75"
                            href={`{% url 'delete_order' ${order.id} %}`}>Delete Order</a>

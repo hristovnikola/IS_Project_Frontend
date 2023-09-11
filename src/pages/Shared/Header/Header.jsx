@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {BiLogoFacebookCircle, BiSolidHome} from "react-icons/bi";
+import React, {useContext, useEffect, useState} from 'react';
+import {BiLogoFacebookCircle, BiSolidHome, BiSolidPurchaseTag} from "react-icons/bi";
 import {BsFacebook, BsFillCartFill, BsInstagram, BsLinkedin} from "react-icons/bs";
 import {FaFacebook} from "react-icons/fa";
 import {Button, Nav, Navbar} from "react-bootstrap";
@@ -8,9 +8,11 @@ import {MdEmail} from "react-icons/md";
 import jwt from 'jwt-decode';
 import ShoppingCartService from "../../../repository/shoppingCartRepository/ShoppingCartRepository";
 import {TbLogin, TbLogout2} from "react-icons/tb";
+import {ShoppingCartContext} from "../../../ShoppingCartContext";
 
 const Header = (props) => {
-    const [cartItems, setCartItems] = useState(0);
+
+    const {cartItems, updateCartItems} = useContext(ShoppingCartContext);
 
     useEffect(() => {
         if (token) {
@@ -21,7 +23,7 @@ const Header = (props) => {
     const getNumberOfItemsInCart = () => {
         ShoppingCartService.getShoppingCartForLoggedInUser()
             .then((data) => {
-                setCartItems((data.data.products).length)
+                updateCartItems((data.data.products).length)
             })
     }
 
@@ -104,6 +106,14 @@ const Header = (props) => {
                                         <span className="me-1">Products</span>
                                         <span className="d-flex mt-auto mb-auto">
                                           <BiSolidHome/>
+                                        </span>
+                                    </div>
+                                </Nav.Link>
+                                <Nav.Link as={Link} to="/orders">
+                                    <div className="d-flex">
+                                        <span className="me-1">Orders</span>
+                                        <span className="d-flex mt-auto mb-auto">
+                                          <BiSolidPurchaseTag/>
                                         </span>
                                     </div>
                                 </Nav.Link>

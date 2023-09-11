@@ -2,8 +2,21 @@ import {BiSolidDownArrow, BiSolidUpArrow} from "react-icons/bi";
 import Swal from "sweetalert2";
 import ShoppingCartService from "../../../repository/shoppingCartRepository/ShoppingCartRepository";
 import swal from "sweetalert";
+import "./ShoppingCartTerm.css";
+import {useContext} from "react";
+import {ShoppingCartContext} from "../../../ShoppingCartContext";
 
 const ShoppingCartTerm = (props) => {
+
+    const {cartItems, updateCartItems} = useContext(ShoppingCartContext);
+
+    const getNumberOfItemsInCart = () => {
+        ShoppingCartService.getShoppingCartForLoggedInUser()
+            .then((data) => {
+                updateCartItems((data.data.products).length);
+                console.log("Data after add", data.data.products.length);
+            })
+    }
 
     const deletedSuccesfullyAlert = () => {
         Swal.fire({
@@ -28,6 +41,7 @@ const ShoppingCartTerm = (props) => {
         ShoppingCartService.deleteProductFromShoppingCart(id)
             .then(() => {
                 deletedSuccesfullyAlert();
+                getNumberOfItemsInCart();
                 props.getShoppingCart();
             }).catch(() => {
             errorAlert();
@@ -82,10 +96,10 @@ const ShoppingCartTerm = (props) => {
                     <div className="col-3 d-flex justify-content-center">
                         <p className="text-center mt-auto mb-auto mx-3 py-2 item_quantity">{props.item.quantity}</p>
                         <div className="d-flex flex-column quantity mt-auto mb-auto">
-                            <BiSolidUpArrow onClick={() => {
+                            <BiSolidUpArrow className={"quantity-arrow"} onClick={() => {
                                 increaseQuantity(props.item.productId)
                             }}/>
-                            <BiSolidDownArrow onClick={() => {
+                            <BiSolidDownArrow className={"quantity-arrow"} onClick={() => {
                                 decreaseQuantity(props.item.productId);
                             }}/>
                         </div>

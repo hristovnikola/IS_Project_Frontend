@@ -7,6 +7,7 @@ import Footer from "./pages/Shared/Footer/Footer";
 import LoginPage from "./pages/Auth/Login/LoginPage";
 import RegisterPage from "./pages/Auth/Register/RegisterPage";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
+import Orders from "./pages/Orders/Orders";
 
 const AllRoutes = () => {
 
@@ -23,6 +24,7 @@ const AllRoutes = () => {
                 <Route path="/home" element={<Home/>}/>
                 <Route path="/products" element={<ProductList/>}/>
                 <Route path="/cart" element={<ShoppingCart/>}/>
+                <Route path="/orders" element={<Orders/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/register" element={<RegisterPage/>}/>
             </Routes>

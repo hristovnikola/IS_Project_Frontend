@@ -2,12 +2,11 @@ import "./ProductTerm.css"
 import "../ProductsList/ProductsList.css"
 import ProductService from "../../../repository/productRepository/ProductRepository";
 import swal from "sweetalert";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import AddEditProductModal from "../AddEditProductModal/AddEditProductModal";
 import ShoppingCartService from "../../../repository/shoppingCartRepository/ShoppingCartRepository";
 import Swal from 'sweetalert2';
-import {Link, Navigate} from "react-router-dom";
-import {useShoppingCart} from "../../../ShoppingCartContext";
+import {ShoppingCartContext} from "../../../ShoppingCartContext";
 
 const ProductTerm = (props) => {
 
@@ -15,7 +14,7 @@ const ProductTerm = (props) => {
 
     const [showEditModal, setShowEditModal] = useState(false);
 
-    const { updateCartItems } = useShoppingCart();
+    const {cartItems, updateCartItems} = useContext(ShoppingCartContext);
 
     const getNumberOfItemsInCart = () => {
         ShoppingCartService.getShoppingCartForLoggedInUser()
