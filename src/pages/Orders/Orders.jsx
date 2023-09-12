@@ -20,24 +20,68 @@ const Orders = (props) => {
     }
 
     const CreateInvoice = (id) => {
-        OrderService.createInvoice(id).then(() => {
-            SuccessfulAlert();
-        }).catch(() => {
-            errorAlert();
-        })
-    }
+        OrderService.createInvoice(id)
+            .then((response) => {
+                const blob = new Blob([response.data]);
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                const contentDisposition = response.headers.get("Content-Disposition");
+                const match = contentDisposition && contentDisposition.match(/filename=([^;]+)/);
+                const fileName = match && match[1];
+
+                a.href = url;
+                a.download = fileName;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                SuccessfulAlert();
+            })
+            .catch(() => {
+                errorAlert();
+            });
+    };
+
+    const ExportOrders = () => {
+        OrderService.exportOrders()
+            .then((response) => {
+                const contentDisposition = response.headers.get("Content-Disposition");
+                console.log(contentDisposition);
+                const match = contentDisposition && contentDisposition.match(/filename=([^;]+)/);
+                const fileName = match && match[1];
+
+                const blob = new Blob([response.data], { type: response.headers.get("Content-Type") });
+
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = fileName;
+                a.style.display = "none";
+
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                SuccessfulAlert();
+            })
+            .catch(() => {
+                errorAlert();
+            });
+    };
+
+
 
     const SuccessfulAlert = () => {
         Swal.fire({
             title: 'Invoice created',
+            text: 'You can find the invoice in your download folder',
             icon: "success",
-            confirmButtonText: "Continue shopping!"
+            confirmButtonText: "Great!"
         })
     }
 
     const errorAlert = () => {
         swal({
             title: "Something went wrong",
+            text: 'The invoice was not created, try again.',
             icon: "error",
             dangerMode: true
         }).then((willDelete) => {
@@ -48,6 +92,7 @@ const Orders = (props) => {
 
     return (
         <div className={"container"}>
+            <button className={"btn btn-primary"} onClick={() => ExportOrders()}>Export orders</button>
             <table className={"table user-table table-responsive table-borderless table-striped mb-1 mt-3"}>
                 <thead className={"table-header-css"}>
                 <tr className={"rounded-4"}>

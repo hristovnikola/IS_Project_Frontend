@@ -7,8 +7,18 @@ const OrderService = {
     },
 
     createInvoice: (id) => {
-        return axios.post(`/Order/createInvoice/${id}`);
+        return axios.post(`/Order/createInvoice/${id}`, {}, {
+            responseType: "blob",
+        });
+    },
+
+    exportOrders: () => {
+        return axios.get(`/Order/exportAllOrders`, {
+            responseType: 'arraybuffer',
+        });
     }
+
+
 
 }
 
