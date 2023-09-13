@@ -4,6 +4,7 @@ import ProductTerm from "../ProductTerm/ProductTerm";
 import "../ProductTerm/ProductTerm.css"
 import "./ProductsList.css"
 import AddEditProductModal from "../AddEditProductModal/AddEditProductModal";
+import RolesService from "../../../repository/rolesRepository/RolesRepository";
 
 
 const ProductList = () => {
@@ -38,29 +39,34 @@ const ProductList = () => {
     }
 
     return (
-       <div className={"container"}>
-           <div className={"w-100 h-100"}>
-               <AddEditProductModal showModal={showAddModal}
-                                    handleClose={handleCloseAddModal}
-                                    getProducts={getProducts}/>
-               <button className={"d-flex ms-auto mt-3 btn btn-primary px-3 rounded-4"} onClick={handleAddProductClick}>Add
-                   new product
-               </button>
-               <div className="row equal-height-row">
-                   {products.length > 0 ? (products.map((product, index) => (
-                       <ProductTerm product={product}
-                                    key={index}
-                                    getProducts={getProducts}
-                                    handleClose={handleCloseAddModal}
-                                    showModal={handleAddProductClick}/>
-                   ))) : (
-                       <h3 className={"text-center my-5"}>
-                           <i className={"text-secondary no-notification-message"}>There are no products</i>
-                       </h3>
-                   )}
-               </div>
-           </div>
-       </div>
+        <div className={"container"}>
+            <h1 className={"text-center mt-4"}>List of all products</h1>
+            <hr/>
+            <div className={"w-100 h-100"}>
+                <AddEditProductModal showModal={showAddModal}
+                                     handleClose={handleCloseAddModal}
+                                     getProducts={getProducts}/>
+                {RolesService.hasRole(['Admin']) && (
+                    <button className={"d-flex ms-auto mt-3 btn btn-primary px-3 rounded-4"}
+                            onClick={handleAddProductClick}>Add
+                        new product
+                    </button>
+                )}
+                <div className="row equal-height-row">
+                    {products.length > 0 ? (products.map((product, index) => (
+                        <ProductTerm product={product}
+                                     key={index}
+                                     getProducts={getProducts}
+                                     handleClose={handleCloseAddModal}
+                                     showModal={handleAddProductClick}/>
+                    ))) : (
+                        <h3 className={"text-center my-5"}>
+                            <i className={"text-secondary no-notification-message"}>There are no products</i>
+                        </h3>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 }
 

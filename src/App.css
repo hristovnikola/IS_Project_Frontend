@@ -24,9 +24,18 @@ th, td{
     vertical-align: middle !important;
 }
 
-
 body {
-    min-height: 100vh;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
     display: flex;
     flex-direction: column;
+    min-height: 100vh; /* This ensures the wrapper takes at least the full viewport height. */
+}
+
+.main {
+    flex-grow: 1; /* This pushes the footer to the bottom. */
 }

@@ -9,6 +9,7 @@ import jwt from 'jwt-decode';
 import ShoppingCartService from "../../../repository/shoppingCartRepository/ShoppingCartRepository";
 import {TbLogin, TbLogout2} from "react-icons/tb";
 import {ShoppingCartContext} from "../../../ShoppingCartContext";
+import RolesService from "../../../repository/rolesRepository/RolesRepository";
 
 const Header = (props) => {
 
@@ -109,43 +110,48 @@ const Header = (props) => {
                                         </span>
                                     </div>
                                 </Nav.Link>
-                                <Nav.Link as={Link} to="/orders">
-                                    <div className="d-flex">
-                                        <span className="me-1">Orders</span>
-                                        <span className="d-flex mt-auto mb-auto">
+                                {RolesService.hasRole(['Admin']) && (
+                                    <Nav.Link as={Link} to="/orders">
+                                        <div className="d-flex">
+                                            <span className="me-1">Orders</span>
+                                            <span className="d-flex mt-auto mb-auto">
                                           <BiSolidPurchaseTag/>
                                         </span>
-                                    </div>
-                                </Nav.Link>
-                                <Nav.Link as={Link} to="/users">
-                                    <div className="d-flex">
-                                        <span className="me-1">All users</span>
-                                        <span className="d-flex mt-auto mb-auto">
+                                        </div>
+                                    </Nav.Link>
+                                )}
+                                {RolesService.hasRole(['Admin']) && (
+                                    <Nav.Link as={Link} to="/users">
+                                        <div className="d-flex">
+                                            <span className="me-1">All users</span>
+                                            <span className="d-flex mt-auto mb-auto">
                                           <FaUsers/>
                                         </span>
-                                    </div>
-                                </Nav.Link>
-
+                                        </div>
+                                    </Nav.Link>
+                                )}
                                 {/*<Nav.Link href="#">Add Product</Nav.Link>*/}
                                 {/*<Nav.Link href="#">Add Pc</Nav.Link>*/}
                                 {/*<Nav.Link href="#">Add To Role</Nav.Link>*/}
                             </Nav>
-                            <Nav>
-                                <Nav.Link className={"mt-auto mb-auto"} as={Link} to="/cart">
-                                    {token && (
-                                        <div className={"d-flex align-items-center rounded-3 bg-info px-3 py-2"}>
-                                            <>
-                                                <BsFillCartFill size={25}/>
-                                                {cartItems > 0 ? (
-                                                    <div className="ms-1">{cartItems} items</div>
-                                                ) : (
-                                                    <div className="ms-1">Cart is empty</div>
-                                                )}
-                                            </>
-                                        </div>
-                                    )}
-                                </Nav.Link>
-                            </Nav>
+                            {RolesService.hasRole(['User']) && (
+                                <Nav>
+                                    <Nav.Link className={"mt-auto mb-auto"} as={Link} to="/cart">
+                                        {token && (
+                                            <div className={"d-flex align-items-center rounded-3 bg-info px-3 py-2"}>
+                                                <>
+                                                    <BsFillCartFill size={25}/>
+                                                    {cartItems > 0 ? (
+                                                        <div className="ms-1">{cartItems} items</div>
+                                                    ) : (
+                                                        <div className="ms-1">Cart is empty</div>
+                                                    )}
+                                                </>
+                                            </div>
+                                        )}
+                                    </Nav.Link>
+                                </Nav>
+                            )}
                             <Nav>
                                 {!username && <Button as={Link} to="/login" href="#">Login<TbLogout2 size={20}
                                                                                                      className={"mt-auto mb-auto ms-1"}/></Button>}

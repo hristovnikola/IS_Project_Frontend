@@ -20,16 +20,20 @@ const AllRoutes = () => {
 
     return (
         <div className="h-100">
-            {!isLoginPage && !isRegisterPage && <Header/>}
-            <Routes>
-                <Route path="/home" element={<Home/>}/>
-                <Route path="/products" element={<ProductList/>}/>
-                <Route path="/cart" element={<ShoppingCart/>}/>
-                <Route path="/orders" element={<Orders/>}/>
-                <Route path="/users" element={<Users/>}/>
-                <Route path="/login" element={<LoginPage/>}/>
-                <Route path="/register" element={<RegisterPage/>}/>
-            </Routes>
+            <div className={"wrapper"}>
+                {!isLoginPage && !isRegisterPage && <Header/>}
+                <div className={"main"}>
+                    <Routes>
+                        <Route path="/home" element={<Home/>}/>
+                        <Route path="/products" element={<ProductList/>}/>
+                        <Route path="/cart" element={<ShoppingCart/>}/>
+                        <Route path="/orders" element={<Orders/>}/>
+                        <Route path="/users" element={<Users/>}/>
+                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/register" element={<RegisterPage/>}/>
+                    </Routes>
+                </div>
+            </div>
             {!isLoginPage && !isRegisterPage &&  <Footer/>}
         </div>
     )

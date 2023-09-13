@@ -7,6 +7,7 @@ import AddEditProductModal from "../AddEditProductModal/AddEditProductModal";
 import ShoppingCartService from "../../../repository/shoppingCartRepository/ShoppingCartRepository";
 import Swal from 'sweetalert2';
 import {ShoppingCartContext} from "../../../ShoppingCartContext";
+import RolesService from "../../../repository/rolesRepository/RolesRepository";
 
 const ProductTerm = (props) => {
 
@@ -128,19 +129,25 @@ const ProductTerm = (props) => {
                             </span>
                             </div>
                             <div className={"d-flex ms-auto"}>
-                                <a className={"btn btn-info rounded-4 me-2"}
-                                    onClick={() => AddToCart(props.product)}
-                                >Add to cart</a>
-                                <a className={"btn btn-success rounded-4  me-2"}
-                                   onClick={() => {
-                                       setSelectedProductForEdit(props.product);
-                                       handleShowEditProductModal();
-                                   }}
-                                >Edit</a>
-                                <a className={"btn btn-danger rounded-4 "}
-                                   onClick={() => ConfirmationDelete(props.product.id)}
-                                >Delete</a>
+                                {RolesService.hasRole(['User']) && (
+                                    <a className={"btn btn-info rounded-4 me-2"}
+                                       onClick={() => AddToCart(props.product)}>Add to cart</a>
+                                )}
+                                {RolesService.hasRole(['Admin']) && (
+                                    <>
+                                        <a className={"btn btn-success rounded-4  me-2"}
+                                           onClick={() => {
+                                               setSelectedProductForEdit(props.product);
+                                               handleShowEditProductModal();
+                                           }}
+                                        >Edit</a>
+                                        <a className={"btn btn-danger rounded-4 "}
+                                           onClick={() => ConfirmationDelete(props.product.id)}
+                                        >Delete</a>
+                                    </>
+                                )}
                             </div>
+
                         </div>
                     </div>
                 </div>

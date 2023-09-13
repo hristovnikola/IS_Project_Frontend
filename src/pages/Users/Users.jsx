@@ -2,12 +2,22 @@ import './Users.css';
 import {useEffect, useState} from "react";
 import UsersService from "../../repository/usersRepository/UsersRepository";
 import ImportUsersModal from "./ImportUsersModal/ImportUsersModal";
+import jwt from "jwt-decode";
 
 const Users = (props) => {
 
     const [users, setUsers] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
+
+    const token = localStorage.getItem('auth_token');
+
+    let userRole = null;
+    if (token) {
+        const decoded_token = jwt(token);
+        console.log(decoded_token);
+        userRole = decoded_token['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    }
 
 
     useEffect(() => {
@@ -45,6 +55,7 @@ const Users = (props) => {
                     <th scope={"col"}>First name</th>
                     <th scope={"col"}>Last name</th>
                     <th scope={"col"}>Email</th>
+                    <th scope={"col"}>Role</th>
                     {/*<th scope={"col"} className={"pe-4"}></th>*/}
                 </tr>
                 </thead>
@@ -59,6 +70,7 @@ const Users = (props) => {
                             <td>{user.firstName}</td>
                             <td>{user.lastName}</td>
                             <td>{user.email}</td>
+                            <td>{user.role}</td>
                             {/*<td>*/}
                             {/*    <button className={"btn btn-primary"} onClick={() => CreateInvoice(order.id)}>Create Invoice</button>*/}
                             {/*</td>*/}
