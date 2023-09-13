@@ -2,6 +2,7 @@
     padding: 50px 0;
     color: #f0f9ff;
     background-color: #0a324f;
+    margin-top: auto !important;
 }
 
 .footer-dark h3 {
@@ -45,3 +46,4 @@
     font-size: 13px;
     margin-bottom: 0;
 }
+

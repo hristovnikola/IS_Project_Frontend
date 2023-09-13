@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {BiLogoFacebookCircle, BiSolidHome, BiSolidPurchaseTag} from "react-icons/bi";
 import {BsFacebook, BsFillCartFill, BsInstagram, BsLinkedin} from "react-icons/bs";
-import {FaFacebook} from "react-icons/fa";
+import {FaFacebook, FaUsers} from "react-icons/fa";
 import {Button, Nav, Navbar} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {MdEmail} from "react-icons/md";
@@ -114,6 +114,14 @@ const Header = (props) => {
                                         <span className="me-1">Orders</span>
                                         <span className="d-flex mt-auto mb-auto">
                                           <BiSolidPurchaseTag/>
+                                        </span>
+                                    </div>
+                                </Nav.Link>
+                                <Nav.Link as={Link} to="/users">
+                                    <div className="d-flex">
+                                        <span className="me-1">All users</span>
+                                        <span className="d-flex mt-auto mb-auto">
+                                          <FaUsers/>
                                         </span>
                                     </div>
                                 </Nav.Link>
