@@ -10,7 +10,6 @@ const Users = (props) => {
     const [showModal, setShowModal] = useState(false);
 
 
-
     useEffect(() => {
         getAllUsers();
     }, [])
@@ -32,11 +31,11 @@ const Users = (props) => {
     }
 
 
-
     return (
         <div className={"container my-5"}>
             <ImportUsersModal showModal={showModal}
-                              handleClose={handleClosImportUsersModal}/>
+                              handleClose={handleClosImportUsersModal}
+                              getAllUsers={getAllUsers}/>
             <button className={"btn btn-primary"} onClick={() => ImportUsers()}>Import users</button>
             <table className={"table user-table table-responsive table-borderless table-striped mb-1 mt-3"}>
                 <thead className={"table-header-css"}>
