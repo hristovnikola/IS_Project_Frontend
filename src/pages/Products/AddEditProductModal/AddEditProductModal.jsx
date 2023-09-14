@@ -27,10 +27,10 @@ const AddEditProductModal = (props) => {
         price: yup.string().required(),
     });
 
-    const addProductSuccessfulAlert = () => {
+    const addProductSuccessfulAlert = (message) => {
         Swal.fire({
             icon: 'success',
-            title: 'Product added sucessfuly',
+            title: message,
         })
     }
 
@@ -48,7 +48,7 @@ const AddEditProductModal = (props) => {
     const addProduct = (name, description, imagePath, price) => {
         ProductService.addProduct(name, description, imagePath, price)
             .then(() => {
-                addProductSuccessfulAlert();
+                addProductSuccessfulAlert("Product added successfully!");
                 props.getProducts();
                 props.handleClose();
             }).catch(() => {
@@ -59,7 +59,7 @@ const AddEditProductModal = (props) => {
     const editProduct = (id, name, description, imagePath, price) => {
         ProductService.editProduct(id, name, description, imagePath, price)
             .then(() => {
-                addProductSuccessfulAlert();
+                addProductSuccessfulAlert("Product edited successfully");
                 props.getProducts();
                 props.handleClose();
             }).catch(() => {

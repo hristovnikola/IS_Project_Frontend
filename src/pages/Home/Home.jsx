@@ -2,6 +2,8 @@ import "./Home.css"
 import {Button} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {AiOutlineCheckCircle} from "react-icons/ai";
+import {BsFacebook, BsInstagram, BsLinkedin} from "react-icons/bs";
+import React from "react";
 
 const Home = (props) => {
     return (
@@ -43,13 +45,13 @@ const Home = (props) => {
                             </p>
                             <div className="d-inline-flex align-items-center">
                                 <a className="socials px-2" href="https://www.facebook.com/nikola.hristov.7547" target="_blank">
-                                    <i className="fa-brands fa-facebook fa-2x"></i>
+                                    <BsFacebook/>
                                 </a>
                                 <a className="socials px-2" href="https://www.linkedin.com/in/nikola-hristov-729b01235/" target="_blank">
-                                    <i className="fa-brands fa-linkedin fa-2x"></i>
+                                    <BsLinkedin/>
                                 </a>
                                 <a className="socials px-2" href="https://www.instagram.com/hristovnikola_/" target="_blank">
-                                    <i className="fa-brands fa-square-instagram fa-2x"></i>
+                                    <BsInstagram/>
                                 </a>
                             </div>
                         </div>

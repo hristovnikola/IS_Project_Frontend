@@ -92,7 +92,7 @@ const Header = (props) => {
                 <Navbar collapseOnSelect expand="lg"
                         className="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
                     <div className="container-fluid p-2">
-                        <h1 className="heading" style={{color: '#0a324f'}}>Online Pc Builder</h1>
+                        <h1 className="heading me-3" style={{color: '#0a324f'}}>PC Components Store</h1>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="me-auto mb-2 mb-lg-0">

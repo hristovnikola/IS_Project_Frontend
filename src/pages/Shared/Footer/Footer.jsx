@@ -24,15 +24,15 @@ const Footer = (props) => {
                             </ul>
                         </div>
                         <div className="col-md-6 item text text-center mt-lg-0 mt-md-0 mt-sm-0 mt-3">
-                            <h3>Online PC Builder</h3>
+                            <h3>PC Components Store</h3>
                             <p>
-                                Online PC Builder is a online shop on which you can make your dream PC. Simply just choose the components
+                                PC Components Store is an online shop on which you can make your dream PC. Simply just choose the components
                                 you like, add them to your shopping cart and the rest is our job. We will built your PC in matter of days
                                 and you will have it sooner then you think.
                             </p>
                         </div>
                     </div>
-                    <p class="copyright">Online PC Builder © Nikola Hristov</p>
+                    <p class="copyright">PC Components Store © Nikola Hristov</p>
                 </div>
             </footer>
         </div>

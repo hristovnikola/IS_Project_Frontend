@@ -38,7 +38,6 @@ const ProductTerm = (props) => {
         Swal.fire({
             icon: 'success',
             title: 'Product deleted sucessfuly',
-            footer: '<a href="">Why do I have this issue?</a>'
         })
     }
 

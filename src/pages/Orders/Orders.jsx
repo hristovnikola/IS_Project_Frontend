@@ -33,7 +33,9 @@ const Orders = (props) => {
                 a.download = fileName;
                 a.click();
                 window.URL.revokeObjectURL(url);
-                SuccessfulAlert();
+                var title = "Invoice created successfully!";
+                var text = "You can find the invoice in your downloads folder";
+                SuccessfulAlert(title, text);
             })
             .catch(() => {
                 errorAlert();
@@ -60,7 +62,9 @@ const Orders = (props) => {
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
-                SuccessfulAlert();
+                var title = "Orders exported successfully!";
+                var text = "You can find the file in your downloads folder!";
+                SuccessfulAlert(title, text)
             })
             .catch(() => {
                 errorAlert();
@@ -69,10 +73,10 @@ const Orders = (props) => {
 
 
 
-    const SuccessfulAlert = () => {
+    const SuccessfulAlert = (title, text) => {
         Swal.fire({
-            title: 'Invoice created',
-            text: 'You can find the invoice in your download folder',
+            title: title,
+            text: text,
             icon: "success",
             confirmButtonText: "Great!"
         })
