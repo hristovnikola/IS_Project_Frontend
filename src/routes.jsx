@@ -9,6 +9,8 @@ import RegisterPage from "./pages/Auth/Register/RegisterPage";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
 import Orders from "./pages/Orders/Orders";
 import Users from "./pages/Users/Users";
+import ForbiddenPage from "./pages/ForbiddenPage/ForbiddenPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AllRoutes = () => {
 
@@ -17,24 +19,32 @@ const AllRoutes = () => {
     const isLoginPage = location.pathname === '/login';
     const isRegisterPage = location.pathname === '/register';
     const isCartPage = location.pathname === '/cart';
+    const isForbiddenPage = location.pathname === '/forbidden';
 
     return (
         <div className="h-100">
             <div className={"wrapper"}>
-                {!isLoginPage && !isRegisterPage && <Header/>}
+                {!isLoginPage && !isRegisterPage && !isForbiddenPage && <Header/>}
                 <div className={"main"}>
                     <Routes>
                         <Route path="/home" element={<Home/>}/>
                         <Route path="/products" element={<ProductList/>}/>
-                        <Route path="/cart" element={<ShoppingCart/>}/>
-                        <Route path="/orders" element={<Orders/>}/>
-                        <Route path="/users" element={<Users/>}/>
+                        <Route element={<ProtectedRoute authorizedRoles={["User"]}/>}>
+                            <Route exact path="/cart" element={<ShoppingCart/>}/>
+                        </Route>
+                        <Route element={<ProtectedRoute authorizedRoles={["Admin"]}/>}>
+                            <Route exact path="/orders"  element={<Orders/>}/>
+                        </Route>
+                        <Route element={<ProtectedRoute authorizedRoles={["Admin"]}/>}>
+                            <Route path="/users" element={<Users/>}/>
+                        </Route>
+                        <Route path="/forbidden" element={<ForbiddenPage/>}/>
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/register" element={<RegisterPage/>}/>
                     </Routes>
                 </div>
             </div>
-            {!isLoginPage && !isRegisterPage &&  <Footer/>}
+            {!isLoginPage && !isRegisterPage&& !isForbiddenPage  && <Footer/>}
         </div>
     )
 }

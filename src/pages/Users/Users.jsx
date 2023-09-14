@@ -46,7 +46,12 @@ const Users = (props) => {
             <ImportUsersModal showModal={showModal}
                               handleClose={handleClosImportUsersModal}
                               getAllUsers={getAllUsers}/>
-            <button className={"btn btn-primary"} onClick={() => ImportUsers()}>Import users</button>
+            <h1 className={"text-center mt-4"}>List of all users</h1>
+            <hr/>
+            <button className={"d-flex ms-auto mt-3 btn btn-primary px-3 rounded-4"}
+                    onClick={() => ImportUsers()}>
+                Import users
+            </button>
             <table className={"table user-table table-responsive table-borderless table-striped mb-1 mt-3"}>
                 <thead className={"table-header-css"}>
                 <tr className={"rounded-4"}>

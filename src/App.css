@@ -39,3 +39,22 @@ body {
 .main {
     flex-grow: 1; /* This pushes the footer to the bottom. */
 }
+
+.forbidden-icon{
+    color: #0a324f !important;
+}
+
+::-webkit-scrollbar {
+    width: .60rem;
+    background-color: white;
+    border-radius: .5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #128FC8;
+    border-radius: .5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #0a324f;
+}

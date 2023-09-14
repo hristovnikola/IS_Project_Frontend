@@ -10,6 +10,8 @@ import ShoppingCartService from "../../../repository/shoppingCartRepository/Shop
 import {TbLogin, TbLogout2} from "react-icons/tb";
 import {ShoppingCartContext} from "../../../ShoppingCartContext";
 import RolesService from "../../../repository/rolesRepository/RolesRepository";
+import {FaComputer} from "react-icons/fa6";
+import {AiOutlineHome} from "react-icons/ai";
 
 const Header = (props) => {
 
@@ -98,7 +100,7 @@ const Header = (props) => {
                                     <div className="d-flex">
                                         <span className="me-1">Home</span>
                                         <span className="d-flex mt-auto mb-auto">
-                                            <BiSolidHome/>
+                                            <AiOutlineHome/>
                                          </span>
                                     </div>
                                 </Nav.Link>
@@ -106,7 +108,7 @@ const Header = (props) => {
                                     <div className="d-flex">
                                         <span className="me-1">Products</span>
                                         <span className="d-flex mt-auto mb-auto">
-                                          <BiSolidHome/>
+                                          <FaComputer/>
                                         </span>
                                     </div>
                                 </Nav.Link>
